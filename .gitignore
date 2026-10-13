@@ -1,0 +1,43 @@
+# --- Build outputs ---
+build/
+bin/
+lib/
+out/
+*.o
+*.obj
+*.exe
+*.out
+*.app
+
+# --- CMake generated files ---
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake-install.cmake
+cmake_install.cmake
+Makefile
+install_manifest.txt
+*.cmake
+
+# --- IDE and Editor specific files ---
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Xcode (macOS)
+.DS_Store
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!.xcodeproj/xcshareddata/
+.swiftpm/
+
+# CLion / JetBrains
+.idea/
+cmake-build-*/
+
+# --- Project specific temporary or test files ---
+# If your P2P app generates temporary chunks or test downloads, ignore them here
+*.tmp
+test_downloads/
