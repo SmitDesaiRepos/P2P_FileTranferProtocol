@@ -11,6 +11,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Define source files
 set(SOURCES
+    src/main.cpp
     src/socket.cpp
     # We will add socket.cpp, chunker.cpp, etc. here as we build them
 )
