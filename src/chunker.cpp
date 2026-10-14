@@ -3,13 +3,25 @@
 #include <sstream>
 #include <iomanip>
 #include <filesystem>
+#include <openssl/sha.h>
+
 
 namespace p2p {
 
     Chunker::Chunker(size_t piece_size) : chunk_size(piece_size), total_fsize(0) {}
 
     std::string Chunker::compute_sha256(const char* data, size_t length) {
-        return ""; // Placeholder for actual SHA-256 computation
+        unsigned char hash[SHA256_DIGEST_LENGTH];
+
+        //Call Openssl's High-level SHA256 function
+        SHA256(reinterpret_cast<const unsigned char*>(data), length, hash);
+
+        //COnvert raw binary hash bytes into a readable string
+        std::ostringstream oss;
+        for(int i=0; i< SHA256_DIGEST_LENGTH; ++i) {
+            oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(hash[i]);
+        }
+        return oss.str();
     }
 
     bool Chunker::split_file(const std::string& file_path) {
@@ -36,7 +48,7 @@ namespace p2p {
             Chunk chunk;
             chunk.i = i++;
             chunk.data.assign(buffer.begin(), buffer.begin() + bytes_read);
-            chunk.hash = compute_sha256(chunk.data.data(), bytes_read);
+            chunk.hash = compute_sha256(chunk.data.data(), chunk.data.size());
 
             chunks.push_back(chunk);
         }
@@ -58,9 +70,7 @@ namespace p2p {
         return true;
     }
 
-    const std::vector<Chunk>& Chunker::get_chunks() const {
-        return chunks;
-    }
+    const std::vector<Chunk>& Chunker::get_chunks() const {return chunks;}
     size_t Chunker::get_chunk_count() const {return chunks.size();}
     size_t Chunker::get_chunk_size() const {return chunk_size;}
     uintmax_t Chunker::get_total_file_size() const {return total_fsize;}

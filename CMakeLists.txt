@@ -6,9 +6,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+find_package(OPENSSL REQUIRED)
+
 # Include directories so our compiler can find files in the 'include' folder
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-
+include_directories(${OPENSSL_INCLUDE_DIR})
 # Define source files
 set(SOURCES
     src/main.cpp
@@ -19,6 +21,9 @@ set(SOURCES
 
 # Create the executable binary
 add_executable(p2p_transfer ${SOURCES})
+
+# Link OpenSSL Lib to target executable
+target_link_libraries(p2p_transfer PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 
 # Cross-platform networking libraries link check
 if(WIN32)
